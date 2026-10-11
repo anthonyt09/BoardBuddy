@@ -72,7 +72,11 @@ struct ImportVideoView: View {
                 }
             }.value
 
-            try clipStore.saveClip(sourceFilename: movie.url.lastPathComponent, result: result)
+            try clipStore.saveClip(
+                sourceFilename: movie.url.lastPathComponent,
+                videoURL: movie.url,
+                result: result
+            )
             dismiss()
         } catch {
             errorMessage = error.localizedDescription

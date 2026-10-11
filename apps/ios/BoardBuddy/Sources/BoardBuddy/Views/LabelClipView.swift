@@ -22,6 +22,11 @@ struct LabelClipView: View {
                 LabeledContent("Source", value: clip.sourceFilename)
                 LabeledContent("Frames", value: "\(clip.frameCount)")
                 LabeledContent("Detection rate", value: "\(Int(clip.detectionRate * 100))%")
+                NavigationLink {
+                    PoseOverlayView(clip: clip)
+                } label: {
+                    Label("View pose overlay", systemImage: "figure.walk.motion")
+                }
             }
 
             Section("Trick") {

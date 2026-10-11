@@ -69,8 +69,17 @@ final class VideoPoseExtractor {
         reader.add(output)
 
         let fps = Double(track.nominalFrameRate > 0 ? track.nominalFrameRate : 30)
-        let frameSize = track.naturalSize
         let orientation = imageOrientation(for: track.preferredTransform)
+
+        // ML Kit reports landmarks in the *oriented* image space, so for a
+        // quarter-turned clip that space is the raw buffer with width and
+        // height swapped. Reporting naturalSize here instead would leave
+        // every consumer (overlay drawing, normalization for training)
+        // mapping portrait landmarks against landscape bounds.
+        let naturalSize = track.naturalSize
+        let frameSize = (orientation == .right || orientation == .left)
+            ? CGSize(width: naturalSize.height, height: naturalSize.width)
+            : naturalSize
         let estimatedTotalFrames = max(1, Int(CMTimeGetSeconds(asset.duration) * fps))
 
         guard reader.startReading() else {

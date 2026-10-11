@@ -22,6 +22,13 @@ struct ClipMetadata: Codable, Identifiable, Equatable {
 
     var isLabeled: Bool { label != nil }
 
+    /// Container extension of the saved footage, taken from the imported
+    /// filename. Defaults to mov for clips written before videos were kept.
+    var videoFileExtension: String {
+        let ext = (sourceFilename as NSString).pathExtension
+        return ext.isEmpty ? "mov" : ext.lowercased()
+    }
+
     var detectionRate: Double {
         frameCount > 0 ? Double(detectedFrameCount) / Double(frameCount) : 0
     }
