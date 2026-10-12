@@ -1,0 +1,52 @@
+name: BoardBuddy
+options:
+  bundleIdPrefix: com.anthonytaboada.boardbuddy
+  deploymentTarget:
+    iOS: "16.0"
+configs:
+  Debug: debug
+  Release: release
+targets:
+  BoardBuddy:
+    type: application
+    platform: iOS
+    sources:
+      - path: BoardBuddy/Sources/BoardBuddy
+    info:
+      path: BoardBuddy/Resources/Info.plist
+      properties:
+        UILaunchScreen: {}
+        NSPhotoLibraryUsageDescription: "BoardBuddy reads a skate clip from your library to extract pose landmarks for trick labeling."
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.anthonytaboada.boardbuddy.BoardBuddy
+        SWIFT_VERSION: "5.0"
+        TARGETED_DEVICE_FAMILY: "1"
+        IPHONEOS_DEPLOYMENT_TARGET: "16.0"
+
+  BoardBuddyTests:
+    type: bundle.unit-test
+    platform: iOS
+    sources:
+      - path: BoardBuddy/Tests
+        excludes:
+          - "Fixtures/**"
+      - path: BoardBuddy/Tests/Fixtures
+        buildPhase: resources
+    dependencies:
+      - target: BoardBuddy
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.anthonytaboada.boardbuddy.BoardBuddyTests
+        SWIFT_VERSION: "5.0"
+        GENERATE_INFOPLIST_FILE: "YES"
+        IPHONEOS_DEPLOYMENT_TARGET: "16.0"
+schemes:
+  BoardBuddy:
+    build:
+      targets:
+        BoardBuddy: all
+        BoardBuddyTests: [test]
+    test:
+      targets:
+        - BoardBuddyTests
